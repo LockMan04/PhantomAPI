@@ -9,6 +9,14 @@ import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { toast } from 'sonner';
+import { AppSidebar } from "@/components/app-sidebar"
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbList,
+  BreadcrumbPage,
+} from "@/components/ui/breadcrumb"
+import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
 
 const RANDOM_ENDPOINTS = [
   'person', 'address', 'phone', 'company', 'product',
@@ -167,10 +175,25 @@ export default function Home() {
   };
 
   return (
-    <main className="min-h-screen bg-gray-50 dark:bg-zinc-950 text-slate-900 dark:text-slate-100 p-6 md:p-12 font-sans">
-      <div className="max-w-6xl mx-auto space-y-8">
+    <SidebarProvider>
+      <AppSidebar />
+      <SidebarInset>
+        <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4">
+          <SidebarTrigger className="-ml-1" />
+          <Separator orientation="vertical" className="mr-2 h-4" />
+          <Breadcrumb>
+            <BreadcrumbList>
+              <BreadcrumbItem>
+                <BreadcrumbPage>Documentation Playground</BreadcrumbPage>
+              </BreadcrumbItem>
+            </BreadcrumbList>
+          </Breadcrumb>
+        </header>
 
-        {/* Header */}
+        <main className="flex-1 bg-gray-50 dark:bg-zinc-950 text-slate-900 dark:text-slate-100 p-6 md:p-10 font-sans">
+          <div className="max-w-5xl mx-auto space-y-8">
+
+            {/* Header */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
             <h1 className="text-4xl font-bold tracking-tight">{t.title}</h1>
@@ -323,8 +346,10 @@ export default function Home() {
 
             </div>
           </TabsContent>
-        </Tabs>
-      </div>
-    </main>
+          </Tabs>
+        </div>
+      </main>
+      </SidebarInset>
+    </SidebarProvider>
   );
 }
