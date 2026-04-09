@@ -1,13 +1,26 @@
-import { faker, fakerVI, Faker } from '@faker-js/faker';
+import { Faker, en, vi } from '@faker-js/faker';
 
 export type Locale = 'en' | 'vi';
 
+// A simple but effective string hash (cyrb53)
+const cyrb53 = (str: string, seed = 0) => {
+  let h1 = 0xdeadbeef ^ seed, h2 = 0x41c6ce57 ^ seed;
+  for (let i = 0, ch; i < str.length; i++) {
+    ch = str.charCodeAt(i);
+    h1 = Math.imul(h1 ^ ch, 2654435761);
+    h2 = Math.imul(h2 ^ ch, 1597334677);
+  }
+  h1 = Math.imul(h1 ^ (h1 >>> 16), 2246822507);
+  h1 ^= Math.imul(h2 ^ (h2 >>> 13), 3266489909);
+  h2 = Math.imul(h2 ^ (h2 >>> 16), 2246822507);
+  h2 ^= Math.imul(h1 ^ (h1 >>> 13), 3266489909);
+  return 4294967296 * (2097151 & h2) + (h1 >>> 0);
+};
+
 export const getFaker = (locale: Locale, seed?: string): Faker => {
-  const instance = locale === 'vi' ? fakerVI : faker;
+  const instance = new Faker({ locale: locale === 'vi' ? [vi] : [en] });
   if (seed) {
-    // Basic hash to convert string to number for seeding if needed, or simply use string hash
-    const seedNum = seed.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
-    instance.seed(seedNum);
+    instance.seed(cyrb53(seed));
   }
   return instance;
 };
@@ -72,7 +85,7 @@ export const generateUser = (fakerInstance: Faker) => ({
   id: generateId(fakerInstance),
   username: fakerInstance.internet.username(),
   email: fakerInstance.internet.email(),
-  password: fakerInstance.internet.password(),
+  passwordHash: `$2b$10$${fakerInstance.string.alphanumeric({ length: 53 })}`, // dummy hash
   avatar: fakerInstance.image.avatar(),
   registeredAt: fakerInstance.date.past().toISOString(),
 });

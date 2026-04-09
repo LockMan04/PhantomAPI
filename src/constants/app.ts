@@ -1,6 +1,6 @@
 export const RANDOM_ENDPOINTS = [
   'person', 'address', 'phone', 'company', 'product',
-  'user', 'post', 'order', 'finance', 'date',
+  'user', 'post', 'order', 'cart', 'store', 'finance', 'date',
   'internet', 'lorem', 'animal', 'hacker', 'all'
 ];
 
