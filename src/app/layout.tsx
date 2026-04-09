@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { siteConfig } from "@/configs/site";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -15,8 +16,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Random Placeholder API",
-  description: "Blazing fast fake data and image placeholder generator",
+  title: siteConfig.name,
+  description: siteConfig.description,
 };
 
 export default function RootLayout({
