@@ -16,77 +16,7 @@ import {
   SidebarRail,
 } from "@/components/ui/sidebar"
 import { BookOpenTextIcon } from "lucide-react"
-
-// This is sample data.
-const data = {
-  navMain: [
-    {
-      title: "Getting Started",
-      url: "#",
-      items: [
-        {
-          title: "Introduction",
-          url: "#introduction",
-          isActive: true,
-        },
-        {
-          title: "Quick Start",
-          url: "#quick-start",
-        },
-      ],
-    },
-    {
-      title: "Random Data API",
-      url: "#",
-      items: [
-        {
-          title: "Endpoints",
-          url: "#random-endpoints",
-        },
-        {
-          title: "Query Parameters",
-          url: "#random-query",
-        },
-        {
-          title: "Response Format",
-          url: "#random-response",
-        },
-      ],
-    },
-    {
-      title: "Placeholder Images API",
-      url: "#",
-      items: [
-        {
-          title: "Image Endpoint",
-          url: "#placeholder-image",
-        },
-        {
-          title: "Avatar Endpoint",
-          url: "#placeholder-avatar",
-        },
-        {
-          title: "Customization",
-          url: "#placeholder-customization",
-        },
-      ],
-    },
-    {
-      title: "Guides",
-      url: "#",
-      items: [
-        {
-          title: "Error Handling",
-          url: "#error-handling",
-        },
-        {
-          title: "Locales Support",
-          url: "#locales",
-        },
-      ],
-    },
-  ],
-}
+import { navConfig } from "@/configs/nav"
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
@@ -109,7 +39,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       <SidebarContent>
         <SidebarGroup>
           <SidebarMenu>
-            {data.navMain.map((item) => (
+            {navConfig.navMain.map((item) => (
               <SidebarMenuItem key={item.title}>
                 <SidebarMenuButton className="font-semibold" render={<a href={item.url} />}>
                   {item.title}
