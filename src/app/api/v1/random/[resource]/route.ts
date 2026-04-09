@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getFaker, generators, ResourceType, Locale } from '@/lib/faker';
+import { getFaker } from '@/lib/faker/instance';
+import { generators } from '@/lib/faker/generators';
+import { ResourceType, Locale } from '@/lib/faker/types';
 
 // A helper for uniform response formatting
 function sendResponse(data: unknown, meta: Record<string, unknown>) {
