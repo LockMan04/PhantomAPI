@@ -49,7 +49,7 @@ export default function Home() {
       params.set('limit', limit.toString());
       if (seed) params.set('seed', seed);
 
-      const res = await fetch(`/api/random/${endpoint}?${params.toString()}`);
+      const res = await fetch(`/api/v1/random/${endpoint}?${params.toString()}`);
       const data = await res.json();
       setJsonPreview(JSON.stringify(data, null, 2));
     } catch (_error) {
@@ -76,7 +76,7 @@ export default function Home() {
     if (phTextColor) params.set('textColor', phTextColor);
     if (phText) params.set('text', phText);
 
-    const url = `/api/placeholder/${type}?${params.toString()}`;
+    const url = `/api/v1/placeholder/${type}?${params.toString()}`;
     setPreviewImageUrl(url);
   };
 

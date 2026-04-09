@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { getFaker } from '../src/lib/faker';
+import { getFaker } from '../src/lib/faker/instance';
 
 describe('getFaker utility', () => {
   it('should instantiate a new Faker instance each time (no shared state)', () => {
