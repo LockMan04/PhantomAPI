@@ -57,6 +57,15 @@ export const generateProduct = (fakerInstance: Faker) => ({
   price: fakerInstance.commerce.price(),
   department: fakerInstance.commerce.department(),
   material: fakerInstance.commerce.productMaterial(),
+  discountPercentage: fakerInstance.number.int({ min: 0, max: 50 }),
+  rating: fakerInstance.number.float({ min: 1, max: 5, fractionDigits: 1 }),
+  stock: fakerInstance.number.int({ min: 0, max: 100 }),
+  reviews: Array.from({ length: fakerInstance.number.int({ min: 0, max: 5 }) }, () => ({
+    id: generateId(fakerInstance),
+    user: fakerInstance.internet.username(),
+    rating: fakerInstance.number.float({ min: 1, max: 5, fractionDigits: 1 }),
+    comment: fakerInstance.lorem.sentence(),
+  })),
 });
 
 export const generateUser = (fakerInstance: Faker) => ({
@@ -83,6 +92,58 @@ export const generateOrder = (fakerInstance: Faker) => ({
   totalAmount: fakerInstance.commerce.price(),
   status: fakerInstance.helpers.arrayElement(['PENDING', 'PROCESSING', 'SHIPPED', 'DELIVERED', 'CANCELLED']),
   orderedAt: fakerInstance.date.recent().toISOString(),
+  customer: {
+    id: generateId(fakerInstance),
+    name: fakerInstance.person.fullName(),
+    email: fakerInstance.internet.email(),
+  },
+  items: Array.from({ length: fakerInstance.number.int({ min: 1, max: 5 }) }, () => ({
+    productId: generateId(fakerInstance),
+    name: fakerInstance.commerce.productName(),
+    quantity: fakerInstance.number.int({ min: 1, max: 5 }),
+    price: fakerInstance.commerce.price(),
+  })),
+  shippingAddress: generateAddress(fakerInstance),
+});
+
+export const generateCart = (fakerInstance: Faker) => {
+  const items = Array.from({ length: fakerInstance.number.int({ min: 1, max: 10 }) }, () => {
+    const priceStr = fakerInstance.commerce.price();
+    const price = parseFloat(priceStr);
+    const quantity = fakerInstance.number.int({ min: 1, max: 5 });
+    return {
+      productId: generateId(fakerInstance),
+      productName: fakerInstance.commerce.productName(),
+      quantity,
+      unitPrice: price,
+      totalPrice: parseFloat((price * quantity).toFixed(2)),
+    };
+  });
+
+  const cartTotal = items.reduce((sum, item) => sum + item.totalPrice, 0);
+
+  return {
+    id: generateId(fakerInstance),
+    userId: generateId(fakerInstance),
+    items,
+    totalAmount: parseFloat(cartTotal.toFixed(2)),
+    status: fakerInstance.helpers.arrayElement(['ACTIVE', 'ABANDONED', 'CHECKED_OUT']),
+    updatedAt: fakerInstance.date.recent().toISOString(),
+  };
+};
+
+export const generateStore = (fakerInstance: Faker) => ({
+  id: generateId(fakerInstance),
+  name: fakerInstance.company.name(),
+  description: fakerInstance.company.catchPhrase(),
+  categories: Array.from({ length: fakerInstance.number.int({ min: 2, max: 8 }) }, () => fakerInstance.commerce.department()),
+  rating: fakerInstance.number.float({ min: 3, max: 5, fractionDigits: 1 }),
+  contact: {
+    email: fakerInstance.internet.email(),
+    phone: fakerInstance.phone.number(),
+    address: generateAddress(fakerInstance),
+  },
+  createdAt: fakerInstance.date.past().toISOString(),
 });
 
 export const generateFinance = (fakerInstance: Faker) => ({
@@ -153,6 +214,8 @@ export const generators = {
   lorem: generateLorem,
   animal: generateAnimal,
   hacker: generateHacker,
+  cart: generateCart,
+  store: generateStore,
 };
 
 export type ResourceType = keyof typeof generators;
